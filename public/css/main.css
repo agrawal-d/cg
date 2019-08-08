@@ -1,0 +1,24 @@
+/* cyrillic-ext */
+p{
+  font-size:15px;
+}
+body {
+  padding: 50px;
+  font: 14px Roboto, Arial, Arial, sans-serif;
+  color:black;
+  font-size:15px;
+}
+.logo{
+  width:100%;
+}
+.title{
+  margin-top:50px;
+}
+a {
+  color: #00B7FF;
+}
+
+.student, .faculty{
+  display:none;
+  margin-top:30px;
+}
