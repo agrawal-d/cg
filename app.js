@@ -8,15 +8,37 @@ var session = require('express-session');
 var config = require('./config');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var passport = require("passport");
 var app = express();
-
-//database setup
+console.log("Starting app on", config.port);
+console.log("Attempting to connect mongoose to", config.mongoString);
 mongoose.connect(config.mongoString, { useNewUrlParser: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Mongoose DB connection error:'));
+db.once('open', function () {
+  console.log("Connection to DB establishd");
+});
+// app.use(session({
+//   secret: 'get well soon',
+//   resave: false,
+//   saveUninitialized: true
+// }))
+
+
+
+// var session = require("express-session"),
+bodyParser = require("body-parser");
+
+app.use(express.static("public"));
 app.use(session({
-  secret: 'get well soon',
-  resave: false,
+  secret: "cats", resave: false,
   saveUninitialized: true
-}))
+}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,12 +54,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

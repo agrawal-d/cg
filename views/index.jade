@@ -1,6 +1,10 @@
 extends layout
 
-block content
+block container
   h1 BITS Pilani
   p Welcome to CG Transcripts portal.
-  img(src="img/logo.png" width=128 height=128)
+  -if(message)
+    .alert.alert-info #{message}
+  p Hello, #{user.name}
+  b Email : #{user.email}
+  img(src=user.image width=128 height=128)
